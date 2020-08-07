@@ -8,6 +8,11 @@ The backend of VRLifetime, a plugin to visualize the lifetime of objects and ass
 The tool generates json files "lifetime_${CRATE_NAME}.info" under the ${TARGET_DIRECTORY},
 which include the variable id, span, and the lifetime ranges.
 
+e.g.
+```
+./run.sh examples/vec-uaf
+```
+
 ```./query.sh ${JSON_QUERY_STR}```
 
 ${JSON_QUERY_STR} includes "root", "file", "pos", e.g.
@@ -29,7 +34,6 @@ Finally it will merge the lifetime ranges of the variable and returns the json s
         "src/main.rs":"8:5: 8:23, 4:13: 7:6, 4:9: 4:10, 9:1: 9:2, 12:8: 15:2"
 }
 ```
-
 
 
 
