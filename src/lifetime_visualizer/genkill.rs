@@ -73,7 +73,30 @@ impl GenKill {
         //         after.get_mut(loc).unwrap().extend(ids.iter());
         //     }
         // }
-        worklist.push(Location::START);
+        // worklist.push(Location::START);
+        for (bb, bb_data) in body.basic_blocks().iter_enumerated() {
+            let statements_len = bb_data.statements.len();
+            for ii in 0..statements_len {
+                worklist.push(Location {
+                    block: bb,
+                    statement_index: ii,
+                });
+            }
+            if let Some(ref term) = bb_data.terminator {
+                // neglect resume and unreachable
+                match term.kind {
+                    TerminatorKind::Resume | TerminatorKind::Unreachable => {
+                        continue;
+                    }
+                    _ => {}
+                }
+                let loc = Location {
+                    block: bb,
+                    statement_index: statements_len,
+                };
+                worklist.push(loc);
+            }
+        }
         // println!("init_before: {:#?}", before);
         Self {
             gen,
