@@ -26,6 +26,8 @@ use genkill::GenKill;
 mod range;
 use range::{get_fn_range, RangeInFile, RangesAcrossFiles};
 use std::collections::{HashMap, HashSet};
+/// Lifetime visualizer for variables in a crate.
+/// Besides the local info, callgraph in the crate is also included.
 pub struct LifetimeVisualizer {
     crate_locals: HashMap<CrateLocalId, CrateLocalInfo>,
     crate_callgraph: Callgraph,
@@ -45,6 +47,7 @@ impl LifetimeVisualizer {
         }
     }
 
+    /// Collect the lifetime of variables in the current crate and serialize the info to json files.
     pub fn analyze(&mut self, tcx: TyCtxt) {
         let ids = tcx.mir_keys(LOCAL_CRATE);
         let fn_ids: Vec<LocalDefId> = ids
